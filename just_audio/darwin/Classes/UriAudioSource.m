@@ -27,12 +27,28 @@
 }
 
 - (IndexedPlayerItem *)createPlayerItem:(NSString *)uri {
-    IndexedPlayerItem *item;
+
+    NSURL *url;
     if ([uri hasPrefix:@"file://"]) {
-        item = [[IndexedPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:[[uri stringByRemovingPercentEncoding] substringFromIndex:7]]];
+        url = [NSURL fileURLWithPath:[[uri stringByRemovingPercentEncoding] substringFromIndex:7]];
     } else {
-        item = [[IndexedPlayerItem alloc] initWithURL:[NSURL URLWithString:uri]];
+        url = [NSURL URLWithString:uri];
     }
+
+    NSDictionary *assetOptions = @{
+        AVURLAssetPreferPreciseDurationAndTimingKey: @YES
+    };
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:assetOptions];
+
+    IndexedPlayerItem *item;
+//    item = [[IndexedPlayerItem alloc] initWithURL:url];
+    item = [[IndexedPlayerItem alloc] initWithAsset:asset];
+
+//    if ([uri hasPrefix:@"file://"]) {
+//        item = [[IndexedPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:[[uri stringByRemovingPercentEncoding] substringFromIndex:7]]];
+//    } else {
+//        item = [[IndexedPlayerItem alloc] initWithURL:[NSURL URLWithString:uri]];
+//    }
     if (@available(macOS 10.13, iOS 11.0, *)) {
         // This does the best at reducing distortion on voice with speeds below 1.0
         item.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmTimeDomain;
