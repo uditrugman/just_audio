@@ -51,7 +51,8 @@
 //    }
     if (@available(macOS 10.13, iOS 11.0, *)) {
         // This does the best at reducing distortion on voice with speeds below 1.0
-        item.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmTimeDomain;
+        // item.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmTimeDomain;
+        item.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmSpectral;
     }
     if (@available(macOS 10.12, iOS 10.0, *)) {
         if (_loadControl.preferredForwardBufferDuration != (id)[NSNull null]) {
